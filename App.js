@@ -28,7 +28,7 @@ export default function App() {
     ) {
       let randomBox =
         possibleChoice[Math.floor(Math.random() * possibleChoice.length)];
-      handlePress(randomBox);
+      setTimeout(() => handlePress(randomBox), 100);
     }
   }, [currentPlayer, gameMode]);
 
@@ -42,7 +42,7 @@ export default function App() {
     if (winnerCondition) {
       setPainted(winnerCondition);
       setWinner(currentPlayer);
-    } else {
+    } else{
       setCurrentPlayer(prev => (prev === 'X' ? 'O' : 'X'));
     }
   };
@@ -54,23 +54,6 @@ export default function App() {
     setPainted([]);
   };
 
-  let chosenOption;
-
-  // if (gameMode === 'vsPHONE') {
-  //   // Attack
-  //   possiblePositions.forEach(possiblePosition => {
-  //     const mapCopy = copyArray(map);
-
-  //     mapCopy[possiblePosition.row][possiblePosition.col] = 'o';
-
-  //     const winner = getWinner(mapCopy);
-  //     if (winner === 'o') {
-  //       // Attack that position
-  //       chosenOption = possiblePosition;
-  //     }
-  //   });
-  // }
-
   const renderBox = index => (
     <Box
       value={gameBoard[index]}
@@ -79,6 +62,16 @@ export default function App() {
       painted={painted.includes(index)}
     />
   );
+
+  const handleMultiplayer = () => {
+    handleRestart();
+    setGameMode('MULTIPLAYER');
+  };
+
+  const handlePhone = () => {
+    handleRestart();
+    setGameMode('vsPHONE');
+  };
 
   return (
     <View style={styles.container}>
@@ -120,13 +113,13 @@ export default function App() {
       <View style={styles.select_button_container}>
         <MyButton
           title={'MULTIPLAYER'}
-          onPress={() => setGameMode('MULTIPLAYER')}
+          onPress={handleMultiplayer}
           color={gameMode === 'MULTIPLAYER' ? 'steelblue' : 'white'}
           textColor={gameMode === 'MULTIPLAYER' ? 'white' : 'steelblue'}
         />
         <MyButton
           title={'vs PHONE'}
-          onPress={() => setGameMode('vsPHONE')}
+          onPress={handlePhone}
           color={gameMode === 'vsPHONE' ? 'steelblue' : 'white'}
           textColor={gameMode === 'vsPHONE' ? 'white' : 'steelblue'}
         />
