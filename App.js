@@ -11,6 +11,7 @@ export default function App() {
   const [painted, setPainted] = useState([]);
   const [winner, setWinner] = useState(null);
   const [gameMode, setGameMode] = useState('MULTIPLAYER'); // MULTIPLAYER - vsPHONE
+  const [result, setResult] = useState('');
 
   useEffect(() => {
     let possibleChoice = [];
@@ -41,9 +42,20 @@ export default function App() {
 
     if (winnerCondition) {
       setPainted(winnerCondition);
+      setResult(`${currentPlayer} Win`);
       setWinner(currentPlayer);
-    } else{
+    } else {
       setCurrentPlayer(prev => (prev === 'X' ? 'O' : 'X'));
+      setResult('Draw');
+      drawCondition();
+    }
+  };
+
+  const drawCondition = () => {
+    for (let i = 0; i < 9; i++) {
+      if (gameBoard[i] !== null && !winner) {
+        setResult('Draw');
+      }
     }
   };
 
@@ -79,8 +91,7 @@ export default function App() {
       <View style={styles.text_container}>
         {winner ? (
           <View style={styles.winner_container}>
-            <Text style={styles.winner_text}> {currentPlayer} </Text>
-            <Text style={styles.winner_text}> Win </Text>
+            <Text style={styles.winner_text}> {result} </Text>
           </View>
         ) : (
           <Text style={styles.turn_text}>Turn: {currentPlayer}</Text>
